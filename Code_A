@@ -11,11 +11,12 @@ public class Articulation {
     }
 
     public static void creatingAGraphs( ArrayList<Edge> graph[]){
-        //Creating empty arraylist fron Null arraylist
+
+        //Initialize each ArrayList in the array
         for(int i=0; i<graph.length; i++){
             graph[i]= new ArrayList<Edge>();
         }
-
+        //Manually add edges to the graph
         graph[0].add(new Edge(0, 1));
         graph[0].add(new Edge(0, 2));
 
@@ -37,10 +38,11 @@ public class Articulation {
 
     }
 
+
     public static void dfs(ArrayList<Edge> graph[], int curr, boolean vis[], int dt[], int low[], int time, int par, boolean ap[]){
 
         vis[curr]= true; //we always do this weee know why
-        dt[curr]=low[curr]= ++time;
+        dt[curr]=low[curr]= ++time; //// To keep track of discovery times of visited vertices
         int children = 0;
 
         for(int i=0; i< graph[curr].size();i++){
@@ -49,7 +51,7 @@ public class Articulation {
             if(e.dst == par){
                 continue;
             }else if(!vis[e.dst]){
-                dfs(graph, e.dst, vis, dt, low, time, curr, ap);
+                dfs(graph, e.dst, vis, dt, low, time, curr, ap); //// Call the recursive dfs function to find articulation points
                 low[curr]= Math.min(low[curr],low[e.dst]);
                 if(dt[curr]<= low[e.dst] && par != -1){
                     ap[curr]= true;
@@ -66,7 +68,7 @@ public class Articulation {
         }
     }
 
-
+    // Function to find and print articulation points using DFS
     public static void getAp(ArrayList<Edge> graph[], int V){
         int dt[]= new int[V]; //discovery time
         int low[] = new int[V]; //Lowest discovery time
@@ -82,21 +84,24 @@ public class Articulation {
         System.out.println("Prioritize Vaccinations, Testing, In Worst case- Quarantine below Locations");
         for (int i=0; i< V; i++){
             if(ap[i]){
-
+                // Print articulation points
                 System.out.println("Critical Location:"+ i);
 
             }
         }
     }
-
-
-
+    
 
     public static void main(String args[]){
-        int V = 10;
+        // Define the number of unique areas (nodes)
+        int V = 10; // Adjust based on the actual number of unique areas
+
+        // Step 1: Create an array of ArrayLists for the graph
         ArrayList<Edge> graph[] = new ArrayList[V];
+
         creatingAGraphs(graph);
         getAp(graph, V);
 
     }
 }
+
