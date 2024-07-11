@@ -1,0 +1,102 @@
+import java.util.*;
+
+public class Articulation {
+    static class Edge{
+        int src;
+        int dst;
+        public  Edge(int s, int d){
+            this.src = s;
+            this.dst = d;
+        }
+    }
+
+    public static void creatingAGraphs( ArrayList<Edge> graph[]){
+        //Creating empty arraylist fron Null arraylist
+        for(int i=0; i<graph.length; i++){
+            graph[i]= new ArrayList<Edge>();
+        }
+
+        graph[0].add(new Edge(0, 1));
+        graph[0].add(new Edge(0, 2));
+
+        graph[1].add(new Edge(1, 2));
+
+        graph[2].add(new Edge(2, 3));
+        graph[2].add(new Edge(2, 5));
+
+        graph[3].add(new Edge(3, 4));
+
+        graph[4].add(new Edge(4, 5));
+        graph[4].add(new Edge(4, 6));
+
+        graph[6].add(new Edge(6, 6));
+        graph[7].add(new Edge(7, 7));
+
+        graph[8].add(new Edge(8, 8));
+        graph[9].add(new Edge(9, 0));
+
+    }
+
+    public static void dfs(ArrayList<Edge> graph[], int curr, boolean vis[], int dt[], int low[], int time, int par, boolean ap[]){
+
+        vis[curr]= true; //we always do this weee know why
+        dt[curr]=low[curr]= ++time;
+        int children = 0;
+
+        for(int i=0; i< graph[curr].size();i++){
+            Edge e = graph[curr].get(i);
+
+            if(e.dst == par){
+                continue;
+            }else if(!vis[e.dst]){
+                dfs(graph, e.dst, vis, dt, low, time, curr, ap);
+                low[curr]= Math.min(low[curr],low[e.dst]);
+                if(dt[curr]<= low[e.dst] && par != -1){
+                    ap[curr]= true;
+                }
+                children++;
+            }
+            else{ //If the node is visited
+                low[curr]= Math.min(low[curr],dt[e.dst]);
+            }
+        }
+//After DFS is performed for all the vertices, we check another condition for AP
+        if(par == -1 && children > 1){
+            ap[curr]= true;
+        }
+    }
+
+
+    public static void getAp(ArrayList<Edge> graph[], int V){
+        int dt[]= new int[V]; //discovery time
+        int low[] = new int[V]; //Lowest discovery time
+        int time = 0; // intialize time
+        boolean vis[] = new boolean[V];
+        boolean ap[] = new boolean[V];
+
+        for (int i=0; i< V; i++){//disconnected graphs
+            if(!vis[i]){
+                dfs(graph, i, vis, dt, low, time, -1, ap);
+            }
+        }
+        System.out.println("Prioritize Vaccinations, Testing, In Worst case- Quarantine below Locations");
+        for (int i=0; i< V; i++){
+            if(ap[i]){
+
+                System.out.println("Critical Location:"+ i);
+
+            }
+        }
+    }
+
+
+
+
+    public static void main(String args[]){
+        int V = 10;
+        ArrayList<Edge> graph[] = new ArrayList[V];
+        creatingAGraphs(graph);
+        getAp(graph, V);
+
+    }
+}
