@@ -69,16 +69,16 @@ Summary
 Approximations:
 Population Data for Ten Areas in Hyderabad
 
-Banjara Hills: 45,000
-Jubilee Hills: 40,000
-Madhapur: 50,000
-Kondapur: 55,000
-Gachibowli: 60,000
-Hitech City: 35,000
-Begumpet: 70,000
-Secunderabad: 65,000
-Charminar: 80,000
-Abids: 30,000
+0. Banjara Hills: 45,000
+1. Jubilee Hills: 40,000
+2. Madhapur: 50,000
+3. Kondapur: 55,000
+4. Gachibowli: 60,000
+5. Hitech City: 35,000
+6. Begumpet: 70,000
+7. Secunderabad: 65,000
+8. Charminar: 80,000
+9. Abids: 30,000
 
 Connections (Edges) between Areas
 
