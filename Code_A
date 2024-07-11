@@ -51,18 +51,18 @@ public class Articulation {
             if(e.dst == par){
                 continue;
             }else if(!vis[e.dst]){
-                dfs(graph, e.dst, vis, dt, low, time, curr, ap); //// Call the recursive dfs function to find articulation points
+                dfs(graph, e.dst, vis, dt, low, time, curr, ap); // Call the recursive dfs function to find articulation points
                 low[curr]= Math.min(low[curr],low[e.dst]);
-                if(dt[curr]<= low[e.dst] && par != -1){
+                if(dt[curr]<= low[e.dst] && par != -1){ // We can get AP only when a Location is not visited, hence we check the AP condition here, if it was visited already, then obviously it is not a AP
                     ap[curr]= true;
                 }
-                children++;
+                children++;//Once the DFS is done, we consider the whole cycle as one child
             }
-            else{ //If the node is visited
+            else{ //If the node is already visited, this shows it was discovered earlier
                 low[curr]= Math.min(low[curr],dt[e.dst]);
             }
         }
-//After DFS is performed for all the vertices, we check another condition for AP
+//After DFS is performed for all the vertices, we check second condition for AP
         if(par == -1 && children > 1){
             ap[curr]= true;
         }
@@ -73,8 +73,8 @@ public class Articulation {
         int dt[]= new int[V]; //discovery time
         int low[] = new int[V]; //Lowest discovery time
         int time = 0; // intialize time
-        boolean vis[] = new boolean[V];
-        boolean ap[] = new boolean[V];
+        boolean vis[] = new boolean[V]; //To track visited locations
+        boolean ap[] = new boolean[V]; //To get Articulation points 
 
         for (int i=0; i< V; i++){//disconnected graphs
             if(!vis[i]){
@@ -90,17 +90,34 @@ public class Articulation {
             }
         }
     }
-    
+
+    public static void findSuperSpreaders( ArrayList<Edge> graph[], int[] population){
+
+        int thresholdPopulation = 50000; // Hypothetical population threshold
+        int thresholdDegree = 1; // Hypothetical degree threshold
+        for (int i = 0; i < graph.length; i++) {
+            int degree = graph[i].size();
+            if (population[i] > thresholdPopulation && degree > thresholdDegree) {
+                System.out.println("Potential super spreader area: " + i + " with population: " + population[i] + " and degree: " + degree);
+            }
+        }
+
+
+    }
+
 
     public static void main(String args[]){
         // Define the number of unique areas (nodes)
         int V = 10; // Adjust based on the actual number of unique areas
 
-        // Step 1: Create an array of ArrayLists for the graph
+        // Create an array of ArrayLists for the graph
         ArrayList<Edge> graph[] = new ArrayList[V];
+        //Population for each area
+        int[] population = {45000, 40000, 50000, 55000, 60000, 35000, 70000, 65000, 80000, 30000};
 
         creatingAGraphs(graph);
         getAp(graph, V);
+        findSuperSpreaders(graph, population);
 
     }
 }
